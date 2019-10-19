@@ -12,7 +12,7 @@ namespace HealthcareClient.BikeConnection
        
         public byte Distance { get; set; }
         public byte Cadence { get; set; }
-
+        public byte Power { get; set; }
         public byte Speed { get; set; }
         public byte Heartbeat { get; set; }
 
@@ -48,6 +48,8 @@ namespace HealthcareClient.BikeConnection
             {
                 bytes.Add((byte)Message.ValueId.CYCLE_RHYTHM);
                 bytes.Add(Cadence);
+                bytes.Add((byte)Message.ValueId.POWER);
+                bytes.Add(Power);
                 //data.Append((byte)Message.ValueId.CYCLE_RHYTHM);
                 //data.Append(Cadence);
             }

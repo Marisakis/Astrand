@@ -38,12 +38,13 @@ namespace HealthcareClient.ServerConnection
             this.receiver = receiver;
         }
 
-        public void AddPage25(int cadence)
+        public void AddPage25(int cadence, int power)
         {
             if (this.clientMessage.HasPage25)
                 PushMessage();
 
             this.clientMessage.Cadence = (byte)cadence;
+            this.clientMessage.Power = (byte)power;
             this.clientMessage.HasPage25 = true;
         }
 
@@ -90,7 +91,10 @@ namespace HealthcareClient.ServerConnection
             {    
                 int cadence;
                 translatedData.TryGetValue("InstantaneousCadence", out cadence);
-                AddPage25(cadence);
+                int power;
+                translatedData.TryGetValue("InstantaneousPower", out power);
+
+                AddPage25(cadence,power);
             }
             else if (16 == PageID)
             {

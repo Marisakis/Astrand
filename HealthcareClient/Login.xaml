@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Login" Height="600" Width="500">
     <Grid Background="#FF1E1E1E">
-        <StackPanel x:Name="stk_Connect" Width="400" VerticalAlignment="Center">
+        <StackPanel x:Name="stk_Connect" Width="400" VerticalAlignment="Center" Visibility="Visible">
             <Label Content="Connect" FontSize="16" Foreground="White" HorizontalContentAlignment="Center" Margin="5,5,5,5"></Label>
             <Label x:Name="lbl_ConnectError" FontSize="12" Foreground="Red" HorizontalContentAlignment="Center" Visibility="Hidden"></Label>
             <Label Content="Ip:" FontSize="14" Foreground="White" Margin="5,5,5,5"></Label>
@@ -25,7 +25,13 @@
             <TextBox x:Name="txb_Name" FontSize="14" Margin="5,5,5,5" Foreground="White" Background="#FF2D2D30" BorderBrush="#FF3E3E42" MaxLength="20"></TextBox>
             <Label Content="BSN:" FontSize="14" Foreground="White" Margin="5,5,5,5"></Label>
             <TextBox x:Name="txb_BSN" FontSize="14" Margin="5,5,5,5" Foreground="White" Background="#FF2D2D30" BorderBrush="#FF3E3E42" MaxLength="20"></TextBox>
-            <Button x:Name="btn_Login" Content="Login" FontSize="14" Margin="5,10,5,10" Foreground="White" Background="#FF2D2D30" BorderBrush="#FF2D2D30" Width="400" Click="Login_Click"></Button>
+            <Label Content="Leeftijd:" FontSize="14" Foreground="White" Margin="5,5,5,5"/>
+            <TextBox x:Name="txb_Age" FontSize="14" Margin="5,5,5,5" Foreground="White" Background="#FF2D2D30" BorderBrush="#FF3E3E42" MaxLength="20"/>
+            <Label Content="Geslacht:" FontSize="14" Foreground="White" Margin="5,5,5,5"/>
+            <TextBox x:Name="txb_Gender" FontSize="14" Margin="5,5,5,5" Foreground="White" Background="#FF2D2D30" BorderBrush="#FF3E3E42" MaxLength="20"/>
+            <Label Content="Gewicht:" FontSize="14" Foreground="White" Margin="5,5,5,5"/>
+            <TextBox x:Name="txb_Weight" FontSize="14" Margin="5,5,5,5" Foreground="White" Background="#FF2D2D30" BorderBrush="#FF3E3E42" MaxLength="20"/>
+            <Button x:Name="btn_Login" Content="Login" FontSize="14" Margin="5,10,-5,10" Foreground="White" Background="#FF2D2D30" BorderBrush="#FF2D2D30" Width="400" Click="Login_Click"/>
         </StackPanel>
     </Grid>
 </Window>
