@@ -50,7 +50,9 @@ namespace HealthcareServer.Files
 
                             return historyData;
                         }
-                        catch (Exception e) { }
+                        catch (Exception e) {
+                            System.Diagnostics.Debug.WriteLine(e.Message);
+                        }
                     }
                 }
                 return null;

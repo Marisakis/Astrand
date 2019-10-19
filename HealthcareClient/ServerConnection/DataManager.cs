@@ -26,6 +26,7 @@ namespace HealthcareClient.ServerConnection
         private HeartrateMonitor heartrateMonitor;
 
         private IClientMessageReceiver receiver;
+        public IClientMessageReceiver astrandTest { get; set; }
 
         public DataManager(HealthCareClient healthcareClient, IClientMessageReceiver receiver) //current observer is datamanager itself, rather than the client window
         {
@@ -70,6 +71,7 @@ namespace HealthcareClient.ServerConnection
             Console.WriteLine("Pushing message");
 #endif
             this.receiver?.HandleClientMessage(this.clientMessage);
+            this.astrandTest?.HandleClientMessage(this.clientMessage);
             HandleClientMessage(this.clientMessage);
             this.clientMessage = new ClientMessage();
             this.clientMessage.HasHeartbeat = false;

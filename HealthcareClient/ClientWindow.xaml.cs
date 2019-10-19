@@ -224,6 +224,7 @@ namespace HealthcareClient
                     clientMessage.Speed = (byte)random.Next(10, 100);
                     clientMessage.Cadence = (byte)random.Next(10, 100);
                     HandleClientMessage(clientMessage);
+                    this.dataManager.astrandTest.HandleClientMessage(clientMessage);
 
                     List<byte> bytes = new List<byte>();
                     //bytes.Add((byte)Message.ValueId.HEARTRATE);
@@ -267,6 +268,14 @@ namespace HealthcareClient
                     lbl_CycleRyhthm.Content = clientMessage.Cadence;
                 }
             }));
+        }
+
+        private void StartTest_Click(object sender, RoutedEventArgs e)
+        {
+
+            Test test = new Test();
+            dataManager.astrandTest = test;
+            test.Start();
         }
     }
 }

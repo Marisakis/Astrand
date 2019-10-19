@@ -41,9 +41,6 @@
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -111,6 +108,7 @@
     <Compile Include="ServerConnection\IHeartrateDataReceiver.cs" />
     <Compile Include="ServerConnection\RealBike.cs" />
     <Compile Include="ServerConnection\TacxTranslater.cs" />
+    <Compile Include="Test.cs" />
     <Compile Include="Vr\Actions\ActionRequest.cs" />
     <Compile Include="Vr\Actions\IResponseValidator.cs" />
     <Compile Include="Vr\Actions\Response.cs" />
