@@ -1,0 +1,73 @@
+﻿<Window x:Class="HealthcareServer.Dashboard"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HealthcareServer"
+        xmlns:uicontrols="clr-namespace:UIControls;assembly=UIControls"
+        xmlns:fields="clr-namespace:UIControls.Fields;assembly=UIControls"
+        xmlns:menu="clr-namespace:UIControls.Menu;assembly=UIControls"
+        mc:Ignorable="d"
+        Title="Dashboard" Height="450" Width="800" ResizeMode="NoResize">
+    <Window.Resources>
+        <Style x:Key="ButtonStyle" TargetType="{x:Type Button}">
+            <Style.Setters>
+                <Setter Property="Background" Value="#FF2D2D30"></Setter>
+                <Setter Property="Foreground" Value="White"></Setter>
+                <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                <Setter Property="Margin" Value="5,0,5,0"></Setter>
+            </Style.Setters>
+        </Style>
+        <ControlTemplate x:Key="ButtonControlTemplate" TargetType="{x:Type Button}">
+            <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsDefaulted" Value="True">
+                    <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" TargetName="border" Value="#FF007ACC"/>
+                    <Setter Property="BorderBrush" TargetName="border" Value="#FF007ACC"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" TargetName="border" Value="#FF007ACC"/>
+                    <Setter Property="BorderBrush" TargetName="border" Value="#FF007ACC"/>
+                </Trigger>
+                <Trigger Property="ToggleButton.IsChecked" Value="True">
+                    <Setter Property="Background" TargetName="border" Value="#FFBCDDEE"/>
+                    <Setter Property="BorderBrush" TargetName="border" Value="#FF007ACC"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" TargetName="border" Value="#FF323234"/>
+                    <Setter Property="BorderBrush" TargetName="border" Value="#FF323234"/>
+                    <Setter Property="Foreground" Value="#FF838383"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+    </Window.Resources>
+    <Grid x:Name="grd_Grid" Background="#FF1E1E1E">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <uicontrols:Container Header="Verbonden (Cliënten/Dokters)" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="2" Background="#FF1E1E1E" Foreground="#FF333337" HeaderForeground="White" Margin="5,5,2.5,5">
+            
+        </uicontrols:Container>
+        <uicontrols:Container Header="Instellingen" Grid.Column="2" Grid.Row="0" Grid.ColumnSpan="1" Background="#FF1E1E1E" Foreground="#FF333337" HeaderForeground="White" Margin="2.5,5,5,2.5">
+            <WrapPanel>
+                <fields:TextField x:Name="txf_Ip" Header="Ip:" Value="127.0.0.1" Foreground="White" HeaderForeground="White" ValueBackground="#FF2D2D30" ValueBorderBrush="#FF686868" ValueForeground="White" Width="110"></fields:TextField>
+                <fields:TextField x:Name="txf_Port" Header="Poort:" Value="1551" Foreground="White" HeaderForeground="White" ValueBackground="#FF2D2D30" ValueBorderBrush="#FF686868" ValueForeground="White" Width="110"></fields:TextField>
+            </WrapPanel>
+            <Button x:Name="btn_StartStop" Content="Start" Style="{StaticResource ButtonStyle}" Template="{DynamicResource ButtonControlTemplate}" Click="StartStop_Click"></Button>
+        </uicontrols:Container>
+        <uicontrols:Container Header="Log" Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="1" Background="#FF1E1E1E" Foreground="#FF333337" HeaderForeground="White" Margin="2.5,2.5,5,5">
+            <TextBox x:Name="txb_Log" Foreground="White" Background="#FF1E1E1E" BorderBrush="Transparent" AcceptsReturn="True" Height="155"></TextBox>
+        </uicontrols:Container>
+    </Grid>
+</Window>
