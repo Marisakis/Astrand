@@ -56,18 +56,21 @@ namespace HealthcareClient
 
         private void Login_Click(object sender, RoutedEventArgs e)
         {
-            if(!String.IsNullOrEmpty(txb_Name.Text) && !String.IsNullOrEmpty(txb_BSN.Text))
+            if(!String.IsNullOrEmpty(txb_Name.Text) && !String.IsNullOrEmpty(txb_BSN.Text) && !String.IsNullOrEmpty(txb_Age.Text) && !String.IsNullOrEmpty(txb_Gender.Text)  && !String.IsNullOrEmpty(txb_Weight.Text)) 
             {
                 btn_Login.IsEnabled = false;
                 List<byte> bytes = new List<byte>();
                 bytes.Add((byte)txb_BSN.Text.Length);
                 bytes.AddRange(Encoding.UTF8.GetBytes(txb_BSN.Text));
                 bytes.AddRange(Encoding.UTF8.GetBytes(txb_Name.Text));
+                bytes.AddRange(Encoding.UTF8.GetBytes(txb_Gender.Text));
+                bytes.AddRange(Encoding.UTF8.GetBytes(txb_Age.Text));
+                bytes.AddRange(Encoding.UTF8.GetBytes(txb_Weight.Text));
                 this.healthCareClient.Transmit(new Message(false, Message.MessageType.CLIENT_LOGIN, bytes.ToArray()));
             }
             else
             {
-                lbl_Error.Content = "Velden BSN en Naam mogen niet leeg zijn!";
+                lbl_Error.Content = "Velden mogen niet leeg zijn!";
                 lbl_Error.Visibility = Visibility.Visible;
             }
         }

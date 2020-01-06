@@ -14,6 +14,7 @@ namespace HealthcareServer.Net
         public string ClientId;
         public string Name;
 
+
         public HistoryData HistoryData;
 
         public Cliënt(string bsn, string name, string clientId)
