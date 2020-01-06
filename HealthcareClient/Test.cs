@@ -153,28 +153,26 @@ namespace HealthcareClient
                 return heartratecorrected = 0.78;
             }
 
-            if (55 > age >= 50)
+            if (55 > age  && age >= 50)
             {
                 return heartratecorrected *= 0.75;
             }
 
-            if (60 > age >= 55)
+            if (60 > age && age >= 55)
             {
                 return heartratecorrected *= 0.71;
             }
 
-            if (65 > age >= 60)
+            if (65 > age && age >= 60)
             {
                 return heartratecorrected *= 0.68;
             }
 
-            if (age > 65)
-            {
                 return heartratecorrected *= 0.65;
-            }
+         
         }
 
-        public void Finish()
+        public Double Finish()
         {
             this.bike = null; // to stop changing of resistance after test finishes
 
