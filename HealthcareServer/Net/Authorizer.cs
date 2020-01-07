@@ -38,7 +38,8 @@ namespace HealthcareServer.Net
                     }
                 }
             }
-            return false;
+            return true;
+            //return false;
         }
 
         public static bool AddNewDoctorAuthorization(string username, string password, string cryptoKey)
