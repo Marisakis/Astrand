@@ -32,7 +32,8 @@ namespace Networking.HealthCare
             SPEED,
             CYCLE_RHYTHM,
             POWER,
-            RESISTANCE
+            RESISTANCE,
+            VO2MAX
         }
 
         public bool isDoctor { get; }

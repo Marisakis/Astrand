@@ -35,6 +35,16 @@ namespace HealthcareServer.Files
                             JArray distancesJson = historydataJson.GetValue("distances").ToObject<JArray>();
                             JArray speedsJson = historydataJson.GetValue("speeds").ToObject<JArray>();
                             JArray cycleRhythmsJson = historydataJson.GetValue("cyclerhythms").ToObject<JArray>();
+                            
+                            JArray vo2maxJson = null;
+                            JToken token = null;
+                            historydataJson.TryGetValue("vo2maxresults", out token);
+                            if (token != null)
+                            {
+                                vo2maxJson = token.ToObject<JArray>();
+                                foreach (JObject vo2maxvalueJson in vo2maxJson)
+                                    historyData.VO2MaxValues.Add((int.Parse(vo2maxvalueJson.GetValue("vo2max").ToString()), DateTime.Parse(vo2maxvalueJson.GetValue("time").ToString())));
+                            }
 
                             foreach (JObject heartrateJson in heartratesJson)
                                 historyData.HeartrateValues.Add((int.Parse(heartrateJson.GetValue("heartrate").ToString()), DateTime.Parse(heartrateJson.GetValue("time").ToString())));
@@ -48,6 +58,7 @@ namespace HealthcareServer.Files
                             foreach (JObject cycleRhythmJson in cycleRhythmsJson)
                                 historyData.CycleRhythmValues.Add((int.Parse(cycleRhythmJson.GetValue("cyclerhythm").ToString()), DateTime.Parse(cycleRhythmJson.GetValue("time").ToString())));
 
+                           
                             return historyData;
                         }
                         catch (Exception e) {
@@ -76,6 +87,7 @@ namespace HealthcareServer.Files
             JArray distancesJson = new JArray();
             JArray speedsJson = new JArray();
             JArray cycleRhythmsjson = new JArray();
+            JArray vo2maxJson = new JArray();
 
             foreach((int heartrate, DateTime time)heartrateData in historyData.HeartrateValues)
             {
@@ -109,11 +121,20 @@ namespace HealthcareServer.Files
                 cycleRhythmsjson.Add(cycleRhythmJson);
             }
 
+            foreach ((int vo2max, DateTime time) vo2maxData in historyData.VO2MaxValues)
+            {
+                JObject vo2maxValueJson = new JObject();
+                vo2maxValueJson.Add("vo2max", vo2maxData.vo2max);
+                vo2maxValueJson.Add("time", vo2maxData.time.ToString());
+                vo2maxJson.Add(vo2maxValueJson);
+            }
+
             JObject historyJson = new JObject();
             historyJson.Add("heartrates", heartratesJson);
             historyJson.Add("distances", distancesJson);
             historyJson.Add("speeds", speedsJson);
             historyJson.Add("cyclerhythms", cycleRhythmsjson);
+            historyJson.Add("vo2maxresults", vo2maxJson);
 
             File.WriteAllText(filesFolderPath + @"/" + bsn + ".json", DataEncryptor.Encrypt(historyJson.ToString(), cryptoKey));
         }

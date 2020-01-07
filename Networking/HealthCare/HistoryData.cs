@@ -11,6 +11,8 @@ namespace Networking.HealthCare
         public List<(int distance, DateTime time)> DistanceValues;
         public List<(int speed, DateTime time)> SpeedValues;
         public List<(int cycleRhythm, DateTime time)> CycleRhythmValues;
+        public List<(int vo2max, DateTime time)> VO2MaxValues;
+
 
         public HistoryData()
         {
@@ -18,6 +20,7 @@ namespace Networking.HealthCare
             this.DistanceValues = new List<(int distance, DateTime time)>();
             this.SpeedValues = new List<(int speed, DateTime time)>();
             this.CycleRhythmValues = new List<(int cycleRhythm, DateTime time)>();
+            this.VO2MaxValues = new List<(int vo2max, DateTime time)>();
         }
 
         public void Transmit(ClientConnection connection, string bsn)
@@ -66,6 +69,12 @@ namespace Networking.HealthCare
                         bytes.AddRange(Encoding.UTF8.GetBytes(CycleRhythmValues[i].time.ToString()));
                     }
 
+                    if (VO2MaxValues.Count - 1 > i)
+                    {
+                        bytes.Add((byte)Message.ValueId.VO2MAX);
+                        bytes.Add((byte)VO2MaxValues[i].vo2max);
+                        bytes.AddRange(Encoding.UTF8.GetBytes(VO2MaxValues[i].time.ToString()));
+                    }
                     connection.Transmit(DataEncryptor.Encrypt(new Message(false, Message.MessageType.SERVER_OK, bytes.ToArray()).GetBytes(), "Test"));
                 }
 

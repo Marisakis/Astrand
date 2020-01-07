@@ -358,6 +358,11 @@ namespace HealthcareDoctor
                                 this.clientHistoryWindow.AddCycleRyhthm((value, time));
                                 break;
                             }
+                        case Message.ValueId.VO2MAX:
+                            {
+                                this.clientHistoryWindow.AddVO2Max((value, time));
+                                break;
+                            }
                     }
                 }
             }

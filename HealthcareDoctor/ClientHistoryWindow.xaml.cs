@@ -25,6 +25,7 @@ namespace HealthcareDoctor
         private LiveChartControl distanceChart;
         private LiveChartControl speedChart;
         private LiveChartControl cycleRhythmChart;
+        private LiveChartControl vo2maxChart;
 
         private HistoryData historyData;
 
@@ -42,20 +43,24 @@ namespace HealthcareDoctor
             this.distanceChart = new LiveChartControl("Afstand", "", "", 40, 400, 200, this.maxIntervals, LiveChart.BlueGreenDarkTheme, true, true, true, true, false, false, true);
             this.speedChart = new LiveChartControl("Snelheid", "", "", 40, 400, 200, this.maxIntervals, LiveChart.BlueGreenDarkTheme, true, true, true, true, false, false, true);
             this.cycleRhythmChart = new LiveChartControl("Rotaties per minuut", "", "", 40, 400, 200, this.maxIntervals, LiveChart.BlueGreenDarkTheme, true, true, true, true, false, false, true);
+            this.vo2maxChart = new LiveChartControl("Vo2MAX resultaten", "", "", 40, 400, 200, this.maxIntervals, LiveChart.BlueGreenDarkTheme, true, true, true, true, false, false, true);
 
             grd_Grid.Children.Add(this.heartrateChart);
             grd_Grid.Children.Add(this.distanceChart);
             grd_Grid.Children.Add(this.speedChart);
             grd_Grid.Children.Add(this.cycleRhythmChart);
+            grd_Grid.Children.Add(this.vo2maxChart);
 
             Grid.SetColumn(this.heartrateChart, 0);
             Grid.SetColumn(this.distanceChart, 1);
             Grid.SetColumn(this.speedChart, 0);
             Grid.SetColumn(this.cycleRhythmChart, 1);
+            Grid.SetColumn(this.vo2maxChart, 0);
             Grid.SetRow(this.heartrateChart, 0);
             Grid.SetRow(this.distanceChart, 0);
             Grid.SetRow(this.speedChart, 1);
             Grid.SetRow(this.cycleRhythmChart, 1);
+            Grid.SetRow(this.vo2maxChart, 2);
         }
 
         public void ProcessHistoryData()
@@ -65,7 +70,8 @@ namespace HealthcareDoctor
                 (this.heartrateChart, this.historyData.HeartrateValues),
                 (this.distanceChart, this.historyData.DistanceValues),
                 (this.speedChart, this.historyData.SpeedValues),
-                (this.cycleRhythmChart, this.historyData.CycleRhythmValues)
+                (this.cycleRhythmChart, this.historyData.CycleRhythmValues),
+                (this.vo2maxChart, this.historyData.VO2MaxValues)
             };
 
             foreach((LiveChartControl livechart, List<(int value, DateTime time)> history) data in dataHisory)
@@ -146,6 +152,11 @@ namespace HealthcareDoctor
         public void AddCycleRyhthm((int value, DateTime time) cycleRhythm)
         {
             historyData.CycleRhythmValues.Add(cycleRhythm);
+        }
+
+        public void AddVO2Max((int value, DateTime time) vo2max)
+        {
+            historyData.VO2MaxValues.Add(vo2max);
         }
     }
 }
