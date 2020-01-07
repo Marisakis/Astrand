@@ -36,6 +36,8 @@
                     <Label x:Name="lbl_Speed" Foreground="White" FontSize="12"></Label>
                     <Label Content="Rotaties per minuut:" Foreground="White" FontSize="12"></Label>
                     <Label x:Name="lbl_CycleRyhthm" Foreground="White" FontSize="12"></Label>
+                    <Label Content="Weerstand:" Foreground="White" FontSize="12"></Label>
+                    <Label x:Name="lbl_resistance" Foreground="White" FontSize="12"></Label>
                 </StackPanel>
                 <StackPanel Grid.Row="1" Grid.ColumnSpan="2">
                     <Label Content="Chat:" Foreground="White" FontSize="12" Margin="0,0,0,5"></Label>

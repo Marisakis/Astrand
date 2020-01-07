@@ -53,6 +53,10 @@ namespace HealthcareClient
             {
                 this.heartbeat = clientMessage.Heartbeat;
             }           
+            if(clientMessage.HasPage17)
+            {
+                this.resistance = clientMessage.Resistance;
+            }
             System.Diagnostics.Debug.WriteLine("Received bikedata in Test");
         }
 

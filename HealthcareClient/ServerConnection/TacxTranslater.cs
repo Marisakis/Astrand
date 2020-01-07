@@ -19,6 +19,10 @@ namespace HealthcareClient.Bike
                 {
                     return TranslateDataPage16(bytes);
                 }
+                else if (dataPage == 17)
+                {
+                    return TranslateDataPage17(bytes);
+                }
                 else if (dataPage == 25)
                 {
                     return TranslateDataPage25(bytes);
@@ -46,6 +50,16 @@ namespace HealthcareClient.Bike
             translatedData.Add("FEStateBitField", Convert.ToInt32(bytes[11].Last<char>().ToString(), 16));
 
             return translatedData;
+        }
+
+        private static Dictionary<String, int> TranslateDataPage17(string[] bytes)
+        {
+            Dictionary<string, int> translatedData = new Dictionary<string, int>();
+            translatedData.Add("PageID", 17);
+            translatedData.Add("Resistance", Convert.ToInt32(bytes[6], 16));
+            return translatedData;
+
+
         }
 
         private static Dictionary<string, int> TranslateDataPage25(string[] bytes)

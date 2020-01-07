@@ -47,7 +47,13 @@ namespace HealthcareClient.ServerConnection
             this.clientMessage.Power = (byte)power;
             this.clientMessage.HasPage25 = true;
         }
+        public void AddPage17(int resistance)
+        {
+            if (this.clientMessage.HasPage17)
+                PushMessage();
 
+            this.clientMessage.Resistance = (byte)resistance;
+        }
         public void AddPage16(int speed, int distance)
         {
             if (this.clientMessage.HasPage16)
@@ -78,6 +84,7 @@ namespace HealthcareClient.ServerConnection
             this.clientMessage.HasHeartbeat = false;
             this.clientMessage.HasPage16 = false;
             this.clientMessage.HasPage25 = false;
+            this.clientMessage.HasPage17 = false;
         }
 
         //Upon receiving data from the bike and Heartbeat Sensor, try to place in a Struct. 
@@ -103,6 +110,12 @@ namespace HealthcareClient.ServerConnection
                 int distance;
                 translatedData.TryGetValue("distance", out distance);
                 AddPage16(speed, distance);
+            }
+            else if (17 == PageID)
+            {
+                int resistance;
+                translatedData.TryGetValue("Resistance", out resistance);
+                AddPage17(resistance);
             }
         }
 

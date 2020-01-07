@@ -31,7 +31,8 @@ namespace Networking.HealthCare
             DISTANCE,
             SPEED,
             CYCLE_RHYTHM,
-            POWER
+            POWER,
+            RESISTANCE
         }
 
         public bool isDoctor { get; }
