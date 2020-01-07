@@ -228,10 +228,10 @@ namespace HealthcareClient
                     clientMessage.HasHeartbeat = true;
                     clientMessage.HasPage16 = true;
                     clientMessage.HasPage25 = true;
-                    clientMessage.Heartbeat = (byte)random.Next(10, 300);
-                    clientMessage.Distance = (byte)random.Next(10, 100);
-                    clientMessage.Speed = (byte)random.Next(10, 100);
-                    clientMessage.Cadence = (byte)random.Next(10, 100);
+                    clientMessage.Heartbeat = (byte)random.Next(130, 150);
+                    clientMessage.Distance = (byte)random.Next(0, 100);
+                    clientMessage.Speed = (byte)random.Next(10, 13);
+                    clientMessage.Cadence = (byte)random.Next(40, 90);
                     HandleClientMessage(clientMessage);
                     if(this.dataManager.astrandTest != null)
                     this.dataManager.astrandTest.HandleClientMessage(clientMessage);

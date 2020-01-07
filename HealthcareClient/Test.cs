@@ -94,6 +94,7 @@ namespace HealthcareClient
                 }
                 if (this.heartbeat > 220 - age)
                 {
+                    chatDisplay.DisplayChat("Heartrate dangerously high. Aborting test.");
                     AbortTest();
                 }
             }
