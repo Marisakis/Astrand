@@ -36,7 +36,7 @@ namespace HealthcareClient
     /// <summary>
     /// Interaction logic for ClientWindow.xaml
     /// </summary>
-    public partial class ClientWindow : Window, IServerDataReceiver, IMessageReceiver, IClientMessageReceiver
+    public partial class ClientWindow : Window, IServerDataReceiver, IMessageReceiver, IClientMessageReceiver, IChatDisplay
     {
         private Client vrClient;
         private Session session;
@@ -44,6 +44,7 @@ namespace HealthcareClient
         private RealBike bike;
 
         private HealthCareClient healthCareClient;
+        private SceneManager sceneManager;
 
         private LiveChartControl liveChartControl;
 
@@ -104,8 +105,8 @@ namespace HealthcareClient
                     btn_Refresh.Foreground = Brushes.Gray;
                     btn_ConnectToSession.Foreground = Brushes.Gray;
 
-                    SceneManager sceneManager = new SceneManager(this.session, this.vrClient);
-                    sceneManager.Show();
+                    this.sceneManager = new SceneManager(this.session, this.vrClient);
+                    this.sceneManager.Show();
                 }
                 else
                     MessageBox.Show("Could not start session invalid session or key!");
@@ -176,10 +177,7 @@ namespace HealthcareClient
                 {
                     case Message.MessageType.CHAT_MESSAGE:
                         {
-                            string chatMessage = Encoding.UTF8.GetString(message.Content);
-
-                            txb_Chat.Text += "Dokter: " + chatMessage + Environment.NewLine;
-                            txb_Chat.ScrollToEnd();
+                            DisplayChat("Dokter" + Encoding.UTF8.GetString(message.Content));
                             break;
                         }
                     case Message.MessageType.CHANGE_RESISTANCE:
@@ -205,6 +203,17 @@ namespace HealthcareClient
             }));
         }
 
+        public void DisplayChat(string chatMessage)
+        {
+            Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
+            {
+                txb_Chat.Text += chatMessage + Environment.NewLine;
+                txb_Chat.ScrollToEnd();
+            }));
+
+            
+        }
+
         private void SendTestBikeData()
         {
             new Thread(() =>
@@ -219,11 +228,12 @@ namespace HealthcareClient
                     clientMessage.HasHeartbeat = true;
                     clientMessage.HasPage16 = true;
                     clientMessage.HasPage25 = true;
-                    clientMessage.Heartbeat = (byte)random.Next(10, 100);
+                    clientMessage.Heartbeat = (byte)random.Next(10, 300);
                     clientMessage.Distance = (byte)random.Next(10, 100);
                     clientMessage.Speed = (byte)random.Next(10, 100);
                     clientMessage.Cadence = (byte)random.Next(10, 100);
                     HandleClientMessage(clientMessage);
+                    if(this.dataManager.astrandTest != null)
                     this.dataManager.astrandTest.HandleClientMessage(clientMessage);
 
                     List<byte> bytes = new List<byte>();
@@ -273,9 +283,11 @@ namespace HealthcareClient
         private void StartTest_Click(object sender, RoutedEventArgs e)
         {
 
-            Test test = new Test(this.bike, 0, Gender.Male, 0);
+            Test test = new Test(this.bike, 0, Gender.Male, 0, this);
             dataManager.astrandTest = test;
-            test.Start();
+            test.InitializeTest();
         }
+
+        
     }
 }
