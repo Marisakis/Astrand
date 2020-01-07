@@ -104,6 +104,7 @@
     <Compile Include="ServerConnection\DataManager.cs" />
     <Compile Include="ServerConnection\HeartrateMonitor.cs" />
     <Compile Include="ServerConnection\IBikeDataReceiver.cs" />
+    <Compile Include="ServerConnection\IChatDisplay.cs" />
     <Compile Include="ServerConnection\IClientMessageReceiver.cs" />
     <Compile Include="ServerConnection\IHeartrateDataReceiver.cs" />
     <Compile Include="ServerConnection\RealBike.cs" />
