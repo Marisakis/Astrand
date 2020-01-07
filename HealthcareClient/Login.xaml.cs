@@ -62,9 +62,13 @@ namespace HealthcareClient
                 List<byte> bytes = new List<byte>();
                 bytes.Add((byte)txb_BSN.Text.Length);
                 bytes.AddRange(Encoding.UTF8.GetBytes(txb_BSN.Text));
+                bytes.Add((byte)txb_Name.Text.Length);
                 bytes.AddRange(Encoding.UTF8.GetBytes(txb_Name.Text));
-                bytes.AddRange(Encoding.UTF8.GetBytes(txb_Gender.Text));
+                bytes.Add((byte)txb_Gender.Text.Length);
+                bytes.AddRange(Encoding.UTF8.GetBytes(txb_Gender.Text)); //TODO: Change to dropdown
+                bytes.Add((byte)txb_Age.Text.Length);
                 bytes.AddRange(Encoding.UTF8.GetBytes(txb_Age.Text));
+                bytes.Add((byte)txb_Weight.Text.Length);
                 bytes.AddRange(Encoding.UTF8.GetBytes(txb_Weight.Text));
                 this.healthCareClient.Transmit(new Message(false, Message.MessageType.CLIENT_LOGIN, bytes.ToArray()));
             }

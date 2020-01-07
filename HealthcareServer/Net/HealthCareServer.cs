@@ -66,9 +66,26 @@ namespace HealthcareServer.Net
                     {
                         BroadcastToDoctors(message.GetBytes());
                         List<byte> bytes = new List<byte>(message.Content);
-                        string bsn = Encoding.UTF8.GetString(bytes.GetRange(1, bytes[0]).ToArray());
-                        string name = Encoding.UTF8.GetString(bytes.GetRange(bytes[0] + 1, bytes.Count() - (bytes[0] + 1)).ToArray());
-                        HandleClientLogin(bsn, name, clientId);
+                        int pointer = 0;
+                        string bsn = Encoding.UTF8.GetString(bytes.GetRange(1, bytes[pointer]).ToArray());
+                        pointer += bytes[pointer] + 1; //points to size of next string
+                        //string name = Encoding.UTF8.GetString(bytes.GetRange(bytes[0] + 1, bytes.Count() - (bytes[0] + 1)).ToArray());
+                        string name = Encoding.UTF8.GetString(bytes.GetRange(pointer +1, bytes[pointer]).ToArray());
+                        pointer += bytes[pointer] + 1;
+                        //gender
+                        string unusedGender = Encoding.UTF8.GetString(bytes.GetRange(pointer + 1, bytes[pointer]).ToArray());
+                        Gender gender = Gender.Male; //Hardcoded: TODO if time: fix enum 
+                        pointer += bytes[pointer] + 1;
+                        //age
+                        string age = Encoding.UTF8.GetString(bytes.GetRange(pointer + 1, bytes[pointer]).ToArray());
+                        int intAge = Int32.Parse(age); // TODO: Low Priority Tryparse 
+                        pointer += bytes[pointer] + 1;
+                        //weight
+                        string weight = Encoding.UTF8.GetString(bytes.GetRange(pointer + 1, bytes[pointer]).ToArray());
+                        int intWeight = Int32.Parse(weight); // TODO: Low priority Tryparse 
+                        pointer += bytes[pointer] + 1;
+
+                        HandleClientLogin(bsn, name, clientId, gender, intAge, intWeight);
                         break;
                     }
                 case Message.MessageType.DOCTOR_LOGIN:
@@ -175,14 +192,14 @@ namespace HealthcareServer.Net
             }
         }
 
-        private void HandleClientLogin(string bsn, string name, string clientId)
+        private void HandleClientLogin(string bsn, string name, string clientId, Gender gender, int age, int weight)
         {
             if (this.cliënts.Where(c => c.BSN == bsn).Count() == 0)
             {
                 if (!Authorizer.ClientExists(bsn))
                     Authorizer.AddClient(bsn);
 
-                this.cliënts.Add(new Cliënt(bsn, name, clientId));
+                this.cliënts.Add(new Cliënt(bsn, name, clientId, gender, age, weight));
                 this.server.Transmit(EncryptMessage(new Message(false, Message.MessageType.SERVER_OK, new byte[1] { (byte)Message.MessageType.CLIENT_LOGIN })), clientId);
             }
             else

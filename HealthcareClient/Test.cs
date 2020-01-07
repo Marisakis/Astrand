@@ -61,6 +61,7 @@ namespace HealthcareClient
             {
                 bike.SetResistence(++resistance);
                 //Send message to client: slower
+                
             }
             else if (cadence < (targetCadence - 5))
             {

@@ -273,7 +273,7 @@ namespace HealthcareClient
         private void StartTest_Click(object sender, RoutedEventArgs e)
         {
 
-            Test test = new Test(this.bike, 0, Gender.Female, 0);
+            Test test = new Test(this.bike, 0, Gender.Male, 0);
             dataManager.astrandTest = test;
             test.Start();
         }
