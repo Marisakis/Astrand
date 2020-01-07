@@ -188,6 +188,11 @@ namespace HealthcareServer.Net
                             cliënt.HistoryData.CycleRhythmValues.Add((cycleRhythm: value, time: dateTime));
                             break;
                         }
+                    case Message.ValueId.VO2MAX:
+                        {
+                            cliënt.HistoryData.VO2MaxValues.Add((vo2max: value, time: dateTime));
+                            break;
+                        }
                 }
             }
         }
