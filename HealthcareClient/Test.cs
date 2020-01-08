@@ -171,6 +171,7 @@ namespace HealthcareClient
 
         private void StartTest()
         {
+            int secondHalf = 0;
             if (this.testPhase == TestPhase.WarmingUp)
             {
                 this.testPhase = TestPhase.Testing;
@@ -178,23 +179,31 @@ namespace HealthcareClient
             // modify bike resistance to get cadence to around 60: increase resistance if cadence too high, decrease resistance if cadence too low
          
                 var timerFirstMinute = new System.Timers.Timer(60000);
+                //timerFirstMinute.Elapsed +=
+                timerFirstMinute.AutoReset = false;
+                timerFirstMinute.Enabled = true;
+
+                var timerSecondMinute = new System.Timers.Timer(120000);
+                //timerSecondMinute.Elapsed +=
+                timerSecondMinute.AutoReset = false;
+                timerSecondMinute.Enabled = true;
 
 
-                var timerSecondMinute = new System.Timers.Timer(60000);
-
-
-                for (int i = 0; i < 8; i++)
-                {
                 var timerSecondHalf = new System.Timers.Timer(15000);
-
+                while(secondHalf < 8)
+                {
+                    timerSecondHalf.AutoReset = true;
+                    secondHalf++;
                 }
+                timerSecondHalf.Elapsed += OnFinishTest;
+                timerSecondHalf.AutoReset = false;
+                timerSecondHalf.Enabled = true;
 
-            var timerFinished = new System.Timers.Timer(1000);
-             timerFinished.Elapsed += OnFinishTest;
-             timerFinished.AutoReset = false;
-             timerFinished.Enabled = true;
 
-              
+                var timerFinished = new System.Timers.Timer(1000);
+                timerFinished.Elapsed += OnFinishTest;
+                timerFinished.AutoReset = false;
+                timerFinished.Enabled = true;
 
                 var timerDelegate = new System.Timers.Timer(240000 / testFactor);
                 timerDelegate.Elapsed += OnFinishTest;
@@ -218,6 +227,8 @@ namespace HealthcareClient
             }
             
         }
+
+     
 
         private void On1MinuteTestRemaining(object sender, ElapsedEventArgs e)
         {
