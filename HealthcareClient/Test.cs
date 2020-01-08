@@ -173,22 +173,22 @@ namespace HealthcareClient
             {
                 this.testPhase = TestPhase.Testing;
                 chatDisplay.DisplayChat("4 minutes remaining");
-            // modify bike resistance to get cadence to around 60: increase resistance if cadence too high, decrease resistance if cadence too low
-            for (int e = 0; e < 2; e++)
-            {
-                var timerFirstHalf = new System.Timers.Timer(60000);
-                
-            }
-            for(int i = 0; i < 8; i++)
-            {
-                var timerSecondHalf = new System.Timers.Timer(15000);
+                // modify bike resistance to get cadence to around 60: increase resistance if cadence too high, decrease resistance if cadence too low
+                for (int e = 0; e < 2; e++)
+                {
+                    var timerFirstHalf = new System.Timers.Timer(60000);
 
-            }
+                }
+                for (int i = 0; i < 8; i++)
+                {
+                    var timerSecondHalf = new System.Timers.Timer(15000);
 
-            var timerDelegate = new System.Timers.Timer(1000);
-            timerDelegate.Elapsed += OnFinishTest;
-            timerDelegate.AutoReset = false;
-            timerDelegate.Enabled = true;
+                }
+
+                var timerDelegate = new System.Timers.Timer(1000);
+                timerDelegate.Elapsed += OnFinishTest;
+                timerDelegate.AutoReset = false;
+                timerDelegate.Enabled = true;
 
                 var timerDelegate = new System.Timers.Timer(240000 / testFactor);
                 timerDelegate.Elapsed += OnFinishTest;
@@ -210,6 +210,7 @@ namespace HealthcareClient
                 progressDelegate3.AutoReset = false;
                 progressDelegate3.Enabled = true;
             }
+            
         }
 
         private void On1MinuteTestRemaining(object sender, ElapsedEventArgs e)
