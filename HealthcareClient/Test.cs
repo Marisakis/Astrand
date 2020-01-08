@@ -185,10 +185,10 @@ namespace HealthcareClient
 
             }
 
-            var timerDelegate = new System.Timers.Timer(1000);
-            timerDelegate.Elapsed += OnFinishTest;
-            timerDelegate.AutoReset = false;
-            timerDelegate.Enabled = true;
+            var timerFinished = new System.Timers.Timer(1000);
+             timerFinished.Elapsed += OnFinishTest;
+             timerFinished.AutoReset = false;
+             timerFinished.Enabled = true;
 
                 var timerDelegate = new System.Timers.Timer(240000 / testFactor);
                 timerDelegate.Elapsed += OnFinishTest;
@@ -252,14 +252,14 @@ namespace HealthcareClient
             {
                 chatDisplay.DisplayChat("Cooldown time!");
                 SetBikeResistance(50);
-                var timerDelegate = new System.Timers.Timer(120000 / testFactor);
-                timerDelegate.Elapsed += OnFinishCoolDown;
-                timerDelegate.AutoReset = false;
-                timerDelegate.Enabled = true;
+                var timerCooldown = new System.Timers.Timer(120000 / testFactor);
+                timerCooldown.Elapsed += OnFinishCoolDown;
+                timerCooldown.AutoReset = false;
+                timerCooldown.Enabled = true;
             }
 
             var timerDelegate = new System.Timers.Timer(60000);
-            timerDelegate.Elapsed += OnFinishCoolDown();
+            timerDelegate.Elapsed += OnFinishCoolDown;
             timerDelegate.AutoReset = false;
             timerDelegate.Enabled = true;
             //Finish();
