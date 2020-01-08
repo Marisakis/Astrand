@@ -28,6 +28,7 @@ namespace HealthcareClient
         private int weight;
         private TestPhase testPhase = TestPhase.Setup;
         private IChatDisplay chatDisplay;
+        private Testdata testdata;
 
         public Test(RealBike bike, int age, Gender gender, int weight, IChatDisplay chatDisplay)
         {
@@ -36,6 +37,7 @@ namespace HealthcareClient
             this.gender = gender;
             this.weight = weight;
             this.chatDisplay = chatDisplay;
+            this.testdata = new Testdata();
         }
 
         /// <summary>
@@ -192,10 +194,7 @@ namespace HealthcareClient
              timerFinished.AutoReset = false;
              timerFinished.Enabled = true;
 
-                var timerDelegate = new System.Timers.Timer(1000);
-                timerDelegate.Elapsed += OnFinishTest;
-                timerDelegate.AutoReset = false;
-                timerDelegate.Enabled = true;
+              
 
                 var timerDelegate = new System.Timers.Timer(240000 / testFactor);
                 timerDelegate.Elapsed += OnFinishTest;
@@ -248,7 +247,7 @@ namespace HealthcareClient
         {
             if (this.testPhase == TestPhase.Testing)
             {
-                Finish();
+                chatDisplay.DisplayChat("VO2MAX:" + Finish());
                 this.testPhase = TestPhase.Finished;
                 StartCoolingDown();
             }
@@ -279,72 +278,24 @@ namespace HealthcareClient
             chatDisplay.DisplayChat("Cooldown ended, please step off");
         }
 
-        public double HeartbeatCorrection(double heartratecorrected)
-        {
-            // age correction for maximum HF value
-            if (age < 25)
-            {
-                return heartratecorrected *= 1.1;
-            }
-
-            if (35> age && age >= 25)
-            {
-                return heartratecorrected *= 1.0;
-            }
-
-            if (40 > age && age >= 35)
-            {
-                return heartratecorrected *= 0.87;
-            }
-
-            if (45 > age && age >= 40)
-            {
-                return heartratecorrected *= 0.83;
-            }
-
-            if (50 > age && age >= 45)
-            {
-                return heartratecorrected = 0.78;
-            }
-
-            if (55 > age  && age >= 50)
-            {
-                return heartratecorrected *= 0.75;
-            }
-
-            if (60 > age && age >= 55)
-            {
-                return heartratecorrected *= 0.71;
-            }
-
-            if (65 > age && age >= 60)
-            {
-                return heartratecorrected *= 0.68;
-            }
-            //if age over 65:
-                return heartratecorrected *= 0.65;
-         
-        }
+       
 
         public Double Finish()
         {
             SetBikeResistance(50);
             this.bike = null; // to stop changing of resistance after test finishes
+            AddTestValuestoTestData();
+            this.testdata.getSteadyStateReached();
+            return this.testdata.getVO2MAX(gender, age);
+            
+        }
 
-            double load = watts * 6.12;
-            double VOMax;
-            //Calculate VO2
-            if (gender == Gender.Female)
-            {
-                //Vrouwen: VO2max[ml / kg / min] = (0.00193 x belasting +0.326) / (0.769 x HFss -56.1) x 1000
-                VOMax = (0.00193 * load + 0.326) / (0.769 * HeartbeatCorrection(this.heartbeat) - 56.1) * 1000;
-            }
-            else
-            {
-                //Mannen: VO2max[ml / kg / min] = (0.00212 x belasting +0.299) / (0.769 x HFss -48.5) x 1000
-                VOMax = (0.00212 * load +0.299) / (0.769 * HeartbeatCorrection(this.heartbeat) - 48.5) * 1000;
-            }
-            return VOMax;
+        private void AddTestValuestoTestData()
+        {
+            testdata.minute1 = 100;
+            testdata.minute2 = 130;
+            testdata.heartbeats = new List<int>(new int[] { 110,112,113, 116,113,115,117 });
+            testdata.watts = new List<int>(new int[] { 100, 150, 200, 150, 100 });
         }
 
         private void SetBikeResistance(byte resistance)
