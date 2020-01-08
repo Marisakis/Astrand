@@ -1,6 +1,8 @@
 ﻿using HealthcareClient.Bike;
 using HealthcareClient.BikeConnection;
+using HealthcareClient.Net;
 using HealthcareClient.ServerConnection;
+using Networking.HealthCare;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,22 +18,25 @@ namespace HealthcareClient
     class Test : IClientMessageReceiver
     {
         private const int testFactor = 10; //CHANGE TO SPEED UP ONLY FOr DEBUG 
-
+        private HealthCareClient client;
         private RealBike bike; // only to send resistances. Data is received via HandleClientMessage
         private int cadence = 0;
         //private const int targetCadence = 55;
         private int heartbeat = 0;
         private byte resistance = 0;
-        private double watts = 0;
+        private int watts = 0;
         private int age = 0;
         private Gender gender;
         private int weight;
         private TestPhase testPhase = TestPhase.Setup;
         private IChatDisplay chatDisplay;
         private Testdata testdata;
+        private int measurementCount;
+        private Timer timerSecondHalf;
 
-        public Test(RealBike bike, int age, Gender gender, int weight, IChatDisplay chatDisplay)
+        public Test(HealthCareClient client, RealBike bike, int age, Gender gender, int weight, IChatDisplay chatDisplay)
         {
+            this.client = client;
             this.bike = bike;
             this.age = age;
             this.gender = gender;
@@ -171,39 +176,21 @@ namespace HealthcareClient
 
         private void StartTest()
         {
-            int secondHalf = 0;
             if (this.testPhase == TestPhase.WarmingUp)
             {
                 this.testPhase = TestPhase.Testing;
                 chatDisplay.DisplayChat("4 minutes remaining");
             // modify bike resistance to get cadence to around 60: increase resistance if cadence too high, decrease resistance if cadence too low
          
-                var timerFirstMinute = new System.Timers.Timer(60000);
-                //timerFirstMinute.Elapsed +=
+                var timerFirstMinute = new System.Timers.Timer(60000 / testFactor);
+                timerFirstMinute.Elapsed += OnFirstMinute;
                 timerFirstMinute.AutoReset = false;
                 timerFirstMinute.Enabled = true;
 
-                var timerSecondMinute = new System.Timers.Timer(120000);
-                //timerSecondMinute.Elapsed +=
+                var timerSecondMinute = new System.Timers.Timer(120000 / testFactor);
+                timerSecondMinute.Elapsed += onSecondMinute;
                 timerSecondMinute.AutoReset = false;
                 timerSecondMinute.Enabled = true;
-
-
-                var timerSecondHalf = new System.Timers.Timer(15000);
-                while(secondHalf < 8)
-                {
-                    timerSecondHalf.AutoReset = true;
-                    secondHalf++;
-                }
-                timerSecondHalf.Elapsed += OnFinishTest;
-                timerSecondHalf.AutoReset = false;
-                timerSecondHalf.Enabled = true;
-
-
-                var timerFinished = new System.Timers.Timer(1000);
-                timerFinished.Elapsed += OnFinishTest;
-                timerFinished.AutoReset = false;
-                timerFinished.Enabled = true;
 
                 var timerDelegate = new System.Timers.Timer(240000 / testFactor);
                 timerDelegate.Elapsed += OnFinishTest;
@@ -228,7 +215,35 @@ namespace HealthcareClient
             
         }
 
-     
+        private void OnFirstMinute(object sender, ElapsedEventArgs e)
+        {
+            if (heartbeat < 110)
+            {
+                chatDisplay.DisplayChat("Heart beat too low, aborting test");
+                AbortTest();
+            }
+            testdata.minute1 = heartbeat;
+        }
+
+        private void onSecondMinute(object sender, ElapsedEventArgs e)
+        {
+            testdata.minute2 = heartbeat;
+            measurementCount = 0;
+            timerSecondHalf = new System.Timers.Timer(15000 / testFactor);
+            timerSecondHalf.Elapsed += OnMeasuringPoint;
+            timerSecondHalf.AutoReset = true;
+            timerSecondHalf.Enabled = true;
+            
+        }
+
+        private void OnMeasuringPoint(object sender, ElapsedEventArgs e)
+        {
+            testdata.heartbeats.Add(heartbeat);
+            testdata.watts.Add(watts);
+            measurementCount++;
+            if (measurementCount >= 8)
+                timerSecondHalf.Enabled = false;
+        }
 
         private void On1MinuteTestRemaining(object sender, ElapsedEventArgs e)
         {
@@ -258,8 +273,13 @@ namespace HealthcareClient
         {
             if (this.testPhase == TestPhase.Testing)
             {
-                chatDisplay.DisplayChat("VO2MAX:" + Finish());
+                double Vo2MAx = Finish();
+                chatDisplay.DisplayChat("VO2MAX:" + Vo2MAx);
                 this.testPhase = TestPhase.Finished;
+                byte[] content = new byte[2];
+                content[0] = (byte)Message.ValueId.VO2MAX;
+                content[1] = (byte)Vo2MAx;
+                Message Vo2Message = new Message(false, Message.MessageType.BIKEDATA, content);
                 StartCoolingDown();
             }
         }
@@ -280,7 +300,6 @@ namespace HealthcareClient
             timerDelegate.Elapsed += OnFinishCoolDown;
             timerDelegate.AutoReset = false;
             timerDelegate.Enabled = true;
-            //Finish();
 
         }
 
@@ -295,8 +314,8 @@ namespace HealthcareClient
         {
             SetBikeResistance(50);
             this.bike = null; // to stop changing of resistance after test finishes
-            AddTestValuestoTestData();
-            this.testdata.getSteadyStateReached();
+            //AddTestValuestoTestData();
+            chatDisplay.DisplayChat("Steady state reached: " + this.testdata.getSteadyStateReached());
             return this.testdata.getVO2MAX(gender, age);
             
         }

@@ -42,6 +42,7 @@ namespace HealthcareClient
         private Session session;
         private DataManager dataManager;
         private RealBike bike;
+        private HeartrateMonitor hrmonitor;
 
         private HealthCareClient healthCareClient;
         private SceneManager sceneManager;
@@ -120,6 +121,7 @@ namespace HealthcareClient
             GetCurrentSessions();
         }
 
+
         private void ConnectToBike_Click(object sender, RoutedEventArgs e)
         {
             if(ConnectToBike())
@@ -129,6 +131,8 @@ namespace HealthcareClient
                 btn_ConnectToBike.Foreground = Brushes.Gray;
             }
         }
+
+
 
         private void SendTestData_Click(object sender, RoutedEventArgs e)
         {
@@ -229,11 +233,13 @@ namespace HealthcareClient
                     clientMessage.HasPage16 = true;
                     clientMessage.HasPage25 = true;
                     clientMessage.HasPage17 = true;
-                    clientMessage.Heartbeat = (byte)random.Next(130, 150);
+                    //clientMessage.Heartbeat = (byte)random.Next(130, 150);
+                    clientMessage.Heartbeat = 140;
                     clientMessage.Distance = (byte)random.Next(0, 100);
                     clientMessage.Speed = (byte)random.Next(10, 13);
                     clientMessage.Cadence = (byte)random.Next(40, 90);
                     clientMessage.Resistance = 50;
+                    clientMessage.Power = (byte)random.Next(80, 90);
                     HandleClientMessage(clientMessage);
                     if(this.dataManager.astrandTest != null)
                     this.dataManager.astrandTest.HandleClientMessage(clientMessage);
@@ -289,11 +295,15 @@ namespace HealthcareClient
         private void StartTest_Click(object sender, RoutedEventArgs e)
         {
 
-            Test test = new Test(this.bike, 0, Gender.Male, 0, this);
+            Test test = new Test(this.healthCareClient, this.bike, 0, Gender.Male, 0, this);
             dataManager.astrandTest = test;
             test.InitializeTest();
         }
 
-        
+      
+        private void ConnectToHR_Click(object sender, RoutedEventArgs e)
+        {
+            this.hrmonitor = new HeartrateMonitor(this.dataManager);
+        }
     }
 }
