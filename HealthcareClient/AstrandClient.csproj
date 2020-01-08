@@ -110,6 +110,7 @@
     <Compile Include="ServerConnection\RealBike.cs" />
     <Compile Include="ServerConnection\TacxTranslater.cs" />
     <Compile Include="Test.cs" />
+    <Compile Include="Testdata.cs" />
     <Compile Include="Vr\Actions\ActionRequest.cs" />
     <Compile Include="Vr\Actions\IResponseValidator.cs" />
     <Compile Include="Vr\Actions\Response.cs" />
