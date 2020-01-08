@@ -97,6 +97,8 @@ namespace HealthcareClient
         {
             // modify bike resistance to get cadence to around 60: increase resistance if cadence too high, decrease resistance if cadence too low
             var timerDelegate = new System.Timers.Timer(240000);
+            var timerFirstMinute = new System.Timers.Timer(60000);
+            var timerSecondMinute = new System.Timers.Timer(60000);
             timerDelegate.Elapsed += OnFinishTest;
             timerDelegate.AutoReset = false;
             timerDelegate.Enabled = true;
@@ -112,7 +114,7 @@ namespace HealthcareClient
         private void StartCoolingDown()
         {
 
-            var timerDelegate = new System.Timers.Timer(120000);
+            var timerDelegate = new System.Timers.Timer(60000);
             timerDelegate.Elapsed += OnFinishCoolDown();
             timerDelegate.AutoReset = false;
             timerDelegate.Enabled = true;
@@ -192,7 +194,8 @@ namespace HealthcareClient
             return VOMax;
         }
 
-
+       
     }
 
+  
 } 
