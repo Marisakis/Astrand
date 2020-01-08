@@ -192,6 +192,11 @@ namespace HealthcareClient
              timerFinished.AutoReset = false;
              timerFinished.Enabled = true;
 
+                var timerDelegate = new System.Timers.Timer(1000);
+                timerDelegate.Elapsed += OnFinishTest;
+                timerDelegate.AutoReset = false;
+                timerDelegate.Enabled = true;
+
                 var timerDelegate = new System.Timers.Timer(240000 / testFactor);
                 timerDelegate.Elapsed += OnFinishTest;
                 timerDelegate.AutoReset = false;
@@ -212,6 +217,7 @@ namespace HealthcareClient
                 progressDelegate3.AutoReset = false;
                 progressDelegate3.Enabled = true;
             }
+            
         }
 
         private void On1MinuteTestRemaining(object sender, ElapsedEventArgs e)
