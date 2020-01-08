@@ -96,9 +96,18 @@ namespace HealthcareClient
         private void StartTest()
         {
             // modify bike resistance to get cadence to around 60: increase resistance if cadence too high, decrease resistance if cadence too low
-            var timerDelegate = new System.Timers.Timer(240000);
-            var timerFirstMinute = new System.Timers.Timer(60000);
-            var timerSecondMinute = new System.Timers.Timer(60000);
+            for (int e = 0; e < 2; e++)
+            {
+                var timerFirstHalf = new System.Timers.Timer(60000);
+                
+            }
+            for(int i = 0; i < 8; i++)
+            {
+                var timerSecondHalf = new System.Timers.Timer(15000);
+
+            }
+
+            var timerDelegate = new System.Timers.Timer(1000);
             timerDelegate.Elapsed += OnFinishTest;
             timerDelegate.AutoReset = false;
             timerDelegate.Enabled = true;
